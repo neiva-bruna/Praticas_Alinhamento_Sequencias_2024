@@ -1,0 +1,18 @@
+# Carregar as bibliotecas necessárias
+library(reshape2)
+
+# Transformar os dados utilizando dcast
+# Assumindo que `counts_av0` é o dataframe que contém suas colunas de interesse
+# Especificar 'library' e 'tratamento_tetraciclina' como 'id.vars'
+# 'corrected' e 'Title_reduced' usados como colunas, valor preenchido por "RPM"
+d_counts_av0 <- dcast(counts_av0, library + tratamento_tetraciclina ~ corrected + Title_reduced, value.var = "RPM")
+
+# Converter o dataframe em uma matriz numérica
+d_counts_av0_matrix <- as.matrix(d_counts_av0[, c(-1, -2)])
+
+# Ajustar e incorporar nomes de linha com informações de tratamento
+row.names(d_counts_av0_matrix) <- paste0(d_counts_av0[, 1], "_", d_counts_av0[, 2])
+
+# Opcional: Visualizar a matriz resultante
+print("Matriz para Heatmap:")
+print(d_counts_av0_matrix)
